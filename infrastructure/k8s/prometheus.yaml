@@ -19,8 +19,22 @@ spec:
     targetRevision: 46.6.0
     helm:
       parameters:
-      - name: alertmanager.enabled
+      # - name: alertmanager.enabled
+      #   value: "false"
+      - name: grafana.enabled
         value: "true"
+      - name: grafana.adminPassword
+        value: "prom-operator"
+      - name: grafana.ingress
+        value: "false" # TODO
+      - name: grafana.resources.limits.cpu
+        value: 100m
+      - name: grafana.resources.limits.memory
+        value: 128Mi
+      - name: grafana.resources.requests.cpu
+        value: 100m
+      - name: grafana.resources.requests.memory
+        value: 128Mi
   destination:
     server: "https://kubernetes.default.svc"
     namespace: prometheus
