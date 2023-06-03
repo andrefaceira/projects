@@ -5,14 +5,48 @@ metadata:
   name: prometheus
   namespace: argocd
 spec:
-  project: default
+  project: prometheus-community
   source:
     chart: kube-prometheus-stack
     repoURL: https://prometheus-community.github.io/helm-charts
     targetRevision: 46.6.0
     helm:
-      valueFiles:
-      - prometheus-values.yaml
+      values: |
+        alertmanager:
+          enabled: false
+
+        grafana:
+          enabled: true
+          adminPassword: "prom-operator"
+          ingress:
+            enabled: false # TODO
+          resources:
+            limits: 
+              cpu: 100m
+              memory: 120Mi
+            requests: 
+              cpu: 100m
+              memory: 120Mi
+
+        prometheusOperator:
+          enabled: true
+          resources: 
+            limits:
+              cpu: 200m
+              memory: 200Mi
+            requests:
+              cpu: 100m
+              memory: 100Mi
+
+        prometheus:
+          enabled: true
+          ingress:
+            enabled: false # TODO
+
+        kubernetesServiceMonitors: false
   destination:
     server: "https://kubernetes.default.svc"
     namespace: prometheus
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
