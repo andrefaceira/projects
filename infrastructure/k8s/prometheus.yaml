@@ -19,8 +19,8 @@ spec:
     targetRevision: 46.6.0
     helm:
       parameters:
-      # - name: alertmanager.enabled
-      #   value: "false"
+        - name: alertmanager.enabled
+          value: "false"
       # - name: grafana.enabled
       #   value: "true"
       # - name: grafana.adminPassword
