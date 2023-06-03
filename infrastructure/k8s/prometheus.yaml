@@ -1,42 +1,15 @@
+
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: kube-prometheus-stack
+  name: prometheus
   namespace: argocd
 spec:
-  destination:
-    namespace: monitoring
-    server: https://kubernetes.default.svc
   project: default
   source:
     chart: kube-prometheus-stack
-    helm:
-      values: |-
-        prometheus-node-exporter:
-           hostRootFsMount:
-             enabled: false
-        prometheusOperator:
-           admissionWebhooks:
-             failurePolicy: Ignore
     repoURL: https://prometheus-community.github.io/helm-charts
-    targetRevision: 42.0.3
-  syncPolicy:
-    syncOptions:
-    - ServerSideApply=true
-    - CreateNamespace=true
-
-
-# apiVersion: argoproj.io/v1alpha1
-# kind: Application
-# metadata:
-#   name: prometheus
-#   namespace: argocd
-# spec:
-#   project: default
-#   source:
-#     chart: kube-prometheus-stack
-#     repoURL: https://prometheus-community.github.io/helm-charts
-#     targetRevision: 46.6.0
+    targetRevision: 45.10.1
 #     helm:
 #       values: |
 #         alertmanager:
@@ -91,9 +64,9 @@ spec:
 #         kubeStateMetrics:
 #           enabled: false
 
-#   destination:
-#     server: "https://kubernetes.default.svc"
-#     namespace: prometheus
-#   syncPolicy:
-#     syncOptions:
-#       - CreateNamespace=true
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: prometheus
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
