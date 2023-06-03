@@ -25,7 +25,7 @@ spec:
         value: "true"
       - name: grafana.adminPassword
         value: "prom-operator"
-      - name: grafana.ingress
+      - name: grafana.ingress.enabled
         value: "false" # TODO
       - name: grafana.resources.limits.cpu
         value: 100m
