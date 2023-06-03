@@ -1,11 +1,4 @@
 
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: prometheus
-
----
-
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -21,22 +14,21 @@ spec:
       parameters:
         - name: alertmanager.enabled
           value: "false"
-      # - name: grafana.enabled
-      #   value: "true"
-      # - name: grafana.adminPassword
-      #   value: "prom-operator"
-      # # - name: grafana.ingress.enabled
-      # #   value: "false" # TODO
-      # - name: grafana.resources.limits.cpu
-      #   value: 100m
-      # - name: grafana.resources.limits.memory
-      #   value: 128Mi
-      # - name: grafana.resources.requests.cpu
-      #   value: 100m
-      # - name: grafana.resources.requests.memory
-      #   value: 128Mi
+        - name: grafana.enabled
+          value: true
+        - name: grafana.adminPassword
+          value: "prom-operator"
+        - name: grafana.ingress.enabled
+          value: "false" # TODO
+        - name: grafana.resources.limits.cpu
+          value: 100m
+        - name: grafana.resources.limits.memory
+          value: 128Mi
+        - name: grafana.resources.requests.cpu
+          value: 100m
+        - name: grafana.resources.requests.memory
+          value: 128Mi
   destination:
     server: "https://kubernetes.default.svc"
     namespace: prometheus
-
----
+    
