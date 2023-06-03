@@ -45,6 +45,25 @@ spec:
 
         kubernetesServiceMonitors: 
           enabled: false
+        kubeApiServer:
+          enabled: false
+        kubelet:
+          enabled: false
+        kubeControllerManager:
+          enabled: false
+        coreDns:
+          enabled: false
+        kubeDns:
+          enabled: false
+        kubeEtcd:
+          enabled: false
+        kubeScheduler:
+          enabled: false
+        kubeProxy:
+          enabled: false
+        kubeStateMetrics:
+          enabled: false
+
   destination:
     server: "https://kubernetes.default.svc"
     namespace: prometheus
