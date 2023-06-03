@@ -1,7 +1,6 @@
 
 variable "digitalocean_token" {
   type = string
-  default = "dop_v1_9701b31b1b12b2ff31d7b33032219afeb5fc6e6ab9a662b5d0a900354017acb7"
 }
 
 variable "digitalocean_region" {
