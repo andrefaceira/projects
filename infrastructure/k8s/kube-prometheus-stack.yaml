@@ -16,5 +16,4 @@ spec:
   destination:
     server: "https://kubernetes.default.svc"
     namespace: prometheus
-
-    helm search repo prometheus-community/kube-prometheus-stack --versions
+    
