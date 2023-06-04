@@ -1,0 +1,25 @@
+
+config:
+  cluster:
+    enabled: false
+    replicas: 2
+
+  jetstream:
+    enabled: true
+
+    fileStore:
+      enabled: true
+      pvc:
+        enabled: true
+        size: 10Gi
+        name:
+
+    memoryStore:
+      enabled: false
+      # ensure that container has a sufficient memory limit greater than maxSize
+      maxSize: 1Gi
+
+promExporter:
+  enabled: true
+  podMonitor:
+    enabled: true
