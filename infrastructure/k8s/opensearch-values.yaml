@@ -1,0 +1,16 @@
+
+singleNode: false
+replicas: 2
+resources:
+  limits:
+    cpu: "1000m"
+    memory: "100Mi"
+  requests:
+    cpu: "1000m"
+    memory: "100Mi"
+persistence:
+  enabled: true
+  size: 5Gi
+ingress:
+  enabled: false
+  

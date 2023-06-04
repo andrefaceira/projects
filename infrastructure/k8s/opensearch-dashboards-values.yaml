@@ -1,0 +1,12 @@
+
+replicaCount: 1
+ingress:
+  enabled: false
+resources:
+  requests:
+    cpu: "100m"
+    memory: "512M"
+  limits:
+    cpu: "100m"
+    memory: "512M"
+    
