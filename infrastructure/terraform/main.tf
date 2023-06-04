@@ -1,12 +1,12 @@
 
-resource "digitalocean_vpc" "default" {
-  name   = "${var.application_name}-vpc"
-  region = var.digitalocean_region
-}
+# resource "digitalocean_vpc" "default" {
+#   name   = "${var.application_name}-vpc"
+#   region = var.digitalocean_region
+# }
 
 resource "digitalocean_kubernetes_cluster" "default" {
   name     = "${var.application_name}-k8s"
-  vpc_uuid = digitalocean_vpc.default.id
+  # vpc_uuid = digitalocean_vpc.default.id
   region   = var.digitalocean_region
   version  = var.k8s.version
 

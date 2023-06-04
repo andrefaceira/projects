@@ -1,0 +1,72 @@
+
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prometheus
+  namespace: argocd
+spec:
+  project: default
+  source:
+    chart: kube-prometheus-stack
+    repoURL: https://prometheus-community.github.io/helm-charts
+    targetRevision: 45.10.1
+#     helm:
+#       values: |
+#         alertmanager:
+#           enabled: false
+
+#         grafana:
+#           enabled: true
+#           adminPassword: "prom-operator"
+#           ingress:
+#             enabled: false # TODO
+#           resources:
+#             limits: 
+#               cpu: 100m
+#               memory: 120Mi
+#             requests: 
+#               cpu: 100m
+#               memory: 120Mi
+
+#         prometheusOperator:
+#           enabled: true
+#           resources: 
+#             limits:
+#               cpu: 200m
+#               memory: 200Mi
+#             requests:
+#               cpu: 100m
+#               memory: 100Mi
+
+#         prometheus:
+#           enabled: true
+#           ingress:
+#             enabled: false # TODO
+
+#         kubernetesServiceMonitors: 
+#           enabled: false
+#         kubeApiServer:
+#           enabled: false
+#         kubelet:
+#           enabled: false
+#         kubeControllerManager:
+#           enabled: false
+#         coreDns:
+#           enabled: false
+#         kubeDns:
+#           enabled: false
+#         kubeEtcd:
+#           enabled: false
+#         kubeScheduler:
+#           enabled: false
+#         kubeProxy:
+#           enabled: false
+#         kubeStateMetrics:
+#           enabled: false
+
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: prometheus
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
