@@ -1,0 +1,9 @@
+apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: configuration
+spec:
+  tracing:
+    samplingRate: "1"
+    zipkin:
+      endpointAddress: "http://localhost:5310/api/v2/spans"

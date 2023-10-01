@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RootNamespace>Faceira.Shared.Application</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Dapr.AspNetCore" Version="1.11.0" />
+      <PackageReference Include="Dapr.Client" Version="1.11.0" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0-rc.1.23419.4" />
+      <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.0-rc.1.23419.4" />
+      <PackageReference Include="OpenTracing.Contrib.NetCore" Version="0.9.0" />
+      <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+    </ItemGroup>
+
+</Project>
