@@ -1,0 +1,46 @@
+version: '3.4'
+
+services:
+
+  faceira-postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_PASSWORD: "admin"
+    ports:
+      - "5100:5432"
+    volumes:
+      - stocks-db-volume:/var/lib/postgresql/data 
+      - ./src/resources/postgres:/docker-entrypoint-initdb.d
+    networks:
+      - faceira-network
+
+  faceira-pgadmin:
+    image: dpage/pgadmin4:latest
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "admin@admin.com"
+      PGADMIN_DEFAULT_PASSWORD: "admin"
+    ports:
+      - "5300:80"
+    volumes:
+      - pg-admin-volume:/var/lib/pgadmin
+      # - xpto:/pgadmin4/servers.json 
+    depends_on:
+      - faceira-postgres
+    networks:
+      - faceira-network
+
+  faceira-zipkin:
+    image: openzipkin/zipkin-slim:latest
+    ports:
+      - "5310:9411"
+    networks:
+      - faceira-network
+
+volumes:
+  stocks-db-volume:
+  pg-admin-volume:
+
+networks: 
+  faceira-network:
+    driver: bridge
+    

@@ -1,0 +1,9 @@
+@Faceira.Apps.Stocks.Api_HostAddress = http://localhost:5500
+
+POST {{Faceira.Apps.Stocks.Api_HostAddress}}/companies/FetchCompanyDetailsFinnhub
+{
+    "symbol": "AAPL"
+}
+Accept: application/json
+
+###

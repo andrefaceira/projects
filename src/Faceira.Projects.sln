@@ -1,0 +1,54 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared", "shared", "{61F2FBD6-2CD3-437A-B349-725801CB4084}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "apps", "apps", "{5279A5F3-C9AF-40E4-AF65-B61B5B6E4057}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "stocks-service", "stocks-service", "{4948FB2F-E4F4-4457-8920-9C650BA75CC6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Faceira.Apps.Stocks.Service", "apps\stocks-service\Faceira.Apps.Stocks.Service\Faceira.Apps.Stocks.Service.csproj", "{B68FB0AA-7970-4747-9593-237BBA9AF6AD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Faceira.Apps.Stocks.Application", "apps\stocks-service\Faceira.Apps.Stocks.Application\Faceira.Apps.Stocks.Application.csproj", "{F9C339AE-5EF4-4A89-B643-3C85C53C0DC2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Faceira.Shared", "shared\Faceira.Shared\Faceira.Shared.csproj", "{4738D566-B4F3-44E1-AB11-31B376155DB2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Faceira.Apps.Stocks.Messages", "apps\stocks-service\Faceira.Apps.Stocks.Messages\Faceira.Apps.Stocks.Messages.csproj", "{BEC11203-90EA-43CF-A44F-070C40466153}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Faceira.Apps.Stocks.Persistence", "apps\stocks-service\Faceira.Apps.Stocks.Persistence\Faceira.Apps.Stocks.Persistence.csproj", "{AF618F9B-A096-4AA5-8BEB-66748E7E2EAF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B68FB0AA-7970-4747-9593-237BBA9AF6AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B68FB0AA-7970-4747-9593-237BBA9AF6AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B68FB0AA-7970-4747-9593-237BBA9AF6AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B68FB0AA-7970-4747-9593-237BBA9AF6AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9C339AE-5EF4-4A89-B643-3C85C53C0DC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9C339AE-5EF4-4A89-B643-3C85C53C0DC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9C339AE-5EF4-4A89-B643-3C85C53C0DC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9C339AE-5EF4-4A89-B643-3C85C53C0DC2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4738D566-B4F3-44E1-AB11-31B376155DB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4738D566-B4F3-44E1-AB11-31B376155DB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4738D566-B4F3-44E1-AB11-31B376155DB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4738D566-B4F3-44E1-AB11-31B376155DB2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BEC11203-90EA-43CF-A44F-070C40466153}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEC11203-90EA-43CF-A44F-070C40466153}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEC11203-90EA-43CF-A44F-070C40466153}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEC11203-90EA-43CF-A44F-070C40466153}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF618F9B-A096-4AA5-8BEB-66748E7E2EAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF618F9B-A096-4AA5-8BEB-66748E7E2EAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF618F9B-A096-4AA5-8BEB-66748E7E2EAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF618F9B-A096-4AA5-8BEB-66748E7E2EAF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4948FB2F-E4F4-4457-8920-9C650BA75CC6} = {5279A5F3-C9AF-40E4-AF65-B61B5B6E4057}
+		{B68FB0AA-7970-4747-9593-237BBA9AF6AD} = {4948FB2F-E4F4-4457-8920-9C650BA75CC6}
+		{F9C339AE-5EF4-4A89-B643-3C85C53C0DC2} = {4948FB2F-E4F4-4457-8920-9C650BA75CC6}
+		{4738D566-B4F3-44E1-AB11-31B376155DB2} = {61F2FBD6-2CD3-437A-B349-725801CB4084}
+		{BEC11203-90EA-43CF-A44F-070C40466153} = {4948FB2F-E4F4-4457-8920-9C650BA75CC6}
+		{AF618F9B-A096-4AA5-8BEB-66748E7E2EAF} = {4948FB2F-E4F4-4457-8920-9C650BA75CC6}
+	EndGlobalSection
+EndGlobal

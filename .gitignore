@@ -1,0 +1,12 @@
+
+*.DS_Store
+.idea/
+*.user
+
+bin/
+obj/
+
+*.tgz
+*Chart.lock
+
+
