@@ -1,11 +1,10 @@
-using Faceira.Shared.Application;
 using Faceira.Shared.Application.Messages;
 
 namespace Faceira.Apps.Stocks.Messages;
 
-public class CompanyUpdateTriggered : IMessage
+public class FinancialsUpdateTriggered : IMessage
 {
-    public CompanyUpdateTriggered(string symbol)
+    public FinancialsUpdateTriggered(string symbol)
     {
         Symbol = symbol;
     }

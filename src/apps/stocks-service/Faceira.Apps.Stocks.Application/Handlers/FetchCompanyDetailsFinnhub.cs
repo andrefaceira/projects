@@ -33,7 +33,7 @@ public class FetchCompanyDetailsFinnhub : IHandle<CompanyUpdateTriggered>
         if (response.GetProperty("ticker").GetString() != symbol)
         {
             throw new InvalidOperationException(
-                $"FinnhubHttpClient.Get<CompanyUpdated> returned a company with symbol {response.GetProperty("ticker").GetString()} instead of {symbol}");
+                $"FinnhubHttpClient returned a company with symbol {response.GetProperty("ticker").GetString()} instead of {symbol}");
         }
         
         return new CompanyUpdated(

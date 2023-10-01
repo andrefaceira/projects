@@ -12,10 +12,10 @@ public class StocksContext : DbContext
     }
 
     public DbSet<CompanyUpdated> Companies { get; set; } = default!;
+    public DbSet<FinancialsUpdated> Financials { get; set; } = default!;
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.HasDefaultSchema("stocks");
-        
     }
 }
