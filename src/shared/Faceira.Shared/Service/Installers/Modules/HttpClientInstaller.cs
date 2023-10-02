@@ -3,7 +3,7 @@ using Faceira.Shared.Application.Application;
 using Faceira.Shared.Application.Dapr;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Faceira.Shared.Application.Service.Installers;
+namespace Faceira.Shared.Application.Service.Installers.Modules;
 
 public static class HttpClientInstaller
 {

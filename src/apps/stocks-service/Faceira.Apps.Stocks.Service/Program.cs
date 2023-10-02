@@ -1,13 +1,12 @@
 using Faceira.Apps.Stocks.Application;
 using Faceira.Apps.Stocks.Messages;
+using Faceira.Shared.Application;
 using Faceira.Shared.Application.Service;
 using Faceira.Shared.Application.Service.Configuration;
-using Faceira.Shared.Application.Service.Installers;
 
 
-var builder = WebApplication.CreateSlimBuilder(args);
+var builder = DefaultApiBuilder.CreateApiBuilder(args);
 
-builder.Services.AddApi();
 builder.Services.AddStocksApplication(new StocksApplicationConfiguration
 {
     // TODO: may be improved?

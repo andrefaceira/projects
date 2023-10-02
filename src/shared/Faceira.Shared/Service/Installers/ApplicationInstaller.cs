@@ -11,43 +11,27 @@ public static class ApplicationInstaller
 {
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
-        return services
-            .AddHandlers(Assembly.GetCallingAssembly())
-            .AddScoped<IDispatcher>(serviceProvider =>
-                new DefaultDispatcher(serviceProvider))
-            .AddScoped<DaprClient, DaprClient>(_ =>
-                new DaprClientBuilder().Build())
-            .AddLogging(logs => { logs.AddConsole(); })
-            .AddOpenTracing(p =>
-            {
-                p.ConfigureAspNetCore(options =>
-                {
-                    options.Hosting.IgnorePatterns.Add(ctx => ctx.Request.Path == "/health");
-                });
-            });
-    }
+        // dispatcher
+        services.AddScoped<IDispatcher>(serviceProvider =>
+            new DefaultDispatcher(serviceProvider));
+            
+        // dapr
+        services.AddScoped<DaprClient, DaprClient>(_ =>
+                new DaprClientBuilder().Build());
 
-    private static IServiceCollection AddHandlers(this IServiceCollection services,
-        Assembly? assembly = null)
-    {
-        assembly ??= Assembly.GetCallingAssembly();
-
-        var handlers = assembly
-            .GetTypes()
-            .Where(p => p.GetInterfaces()
-                .Any(i => i.IsGenericType &&
-                          i.GetGenericTypeDefinition() == typeof(IHandle<>)))
-            .Select(p => new
-            {
-                HandlerType = p,
-                InterfaceType = p.GetInterfaces().First()
-            });
-
-        foreach (var handler in handlers)
+        // logging
+        services.AddLogging(logs =>
+            logs.AddConsole());
+        
+        // tracing
+        services.AddOpenTracing(p =>
         {
-            services.AddScoped(handler.InterfaceType, handler.HandlerType);
-        }
-
+            p.ConfigureAspNetCore(options =>
+            {
+                options.Hosting.IgnorePatterns.Add(ctx => ctx.Request.Path == "/health");
+            });
+        });
+        
         return services;
     }
 }
