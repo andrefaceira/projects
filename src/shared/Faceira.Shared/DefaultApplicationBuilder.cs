@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Builder;
 
 namespace Faceira.Shared.Application;
 
-public static class DefaultApiBuilder
+public static class DefaultApplicationBuilder
 {
     public static WebApplicationBuilder CreateApiBuilder(string[] args,
         IEnumerable<Assembly>? assemblies = null)
@@ -16,5 +16,23 @@ public static class DefaultApiBuilder
         builder.Services.AddHandlers(assemblies);
 
         return builder;
+    }
+    
+    public static WebApplication BuildApi(this WebApplicationBuilder builder)
+    {
+        var app = builder.Build();
+
+        // health checks
+        app.MapHealthChecks("/health");
+        
+        // dapr
+        app.UseCloudEvents();
+        app.MapSubscribeHandler();
+
+        // swagger
+        app.UseSwagger();
+        app.UseSwaggerUI();
+
+        return app;
     }
 }

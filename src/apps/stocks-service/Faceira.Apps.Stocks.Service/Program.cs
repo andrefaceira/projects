@@ -5,7 +5,7 @@ using Faceira.Shared.Application.Service;
 using Faceira.Shared.Application.Service.Configuration;
 
 
-var builder = DefaultApiBuilder.CreateApiBuilder(args);
+var builder = DefaultApplicationBuilder.CreateApiBuilder(args);
 
 builder.Services.AddStocksApplication(new StocksApplicationConfiguration
 {

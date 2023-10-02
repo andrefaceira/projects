@@ -8,6 +8,7 @@ namespace Faceira.Shared.Application.Service;
 
 public static class ServiceApiRouteBuilder
 {
+    // TODO: should register all in namespace / assembly
     public static RouteGroupBuilder BuildServiceApiRoute<TMessage>(this RouteGroupBuilder routeBuilder, string? route = null)
         where TMessage : IMessage
     {
