@@ -2,19 +2,42 @@ version: '3.4'
 
 services:
 
-  faceira-postgres:
+  stocks-service:
+    build: 
+      context: ./src
+      dockerfile: ./apps/stocks-service/Faceira.Apps.Stocks.Service/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+    ports:
+      - "8081:80"
+      - "50001:50001"
+
+  stocks-service-dapr:
+    image: "daprio/daprd"
+    network_mode: "service:stocks-service"
+    depends_on:
+      - stocks-service
+    command: ["./daprd",
+      "-app-id", "stocks-service",
+      "-app-port", "80",
+      "-components-path", "/resources/components",
+      "-config", "/resources/configuration.yaml"
+      ]
+    volumes:
+      - "./src/resources/dapr/:/resources"
+
+  dapr-postgres:
     image: postgres:latest
     environment:
       POSTGRES_PASSWORD: "admin"
     ports:
       - "5100:5432"
     volumes:
-      - stocks-db-volume:/var/lib/postgresql/data 
+      - dapr-postgres-volume:/var/lib/postgresql/data 
       - ./src/resources/postgres:/docker-entrypoint-initdb.d
-    networks:
-      - faceira-network
 
-  faceira-pgadmin:
+  dapr-pgadmin:
     image: dpage/pgadmin4:latest
     environment:
       PGADMIN_DEFAULT_EMAIL: "admin@admin.com"
@@ -22,25 +45,17 @@ services:
     ports:
       - "5300:80"
     volumes:
-      - pg-admin-volume:/var/lib/pgadmin
+      - dapr-pg-admin-volume:/var/lib/pgadmin
       # - xpto:/pgadmin4/servers.json 
     depends_on:
-      - faceira-postgres
-    networks:
-      - faceira-network
+      - dapr-postgres
 
-  faceira-zipkin:
+  dapr-zipkin:
     image: openzipkin/zipkin-slim:latest
     ports:
       - "5310:9411"
-    networks:
-      - faceira-network
 
 volumes:
-  stocks-db-volume:
-  pg-admin-volume:
-
-networks: 
-  faceira-network:
-    driver: bridge
+  dapr-postgres-volume:
+  dapr-pg-admin-volume:
     
