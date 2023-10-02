@@ -7,9 +7,10 @@ public class ReportUpdated
     public ReportUpdated(string symbol, int year, int quarter, DateTime periodStart, DateTime periodEnd, 
         decimal? revenue, decimal? costsOfGoodsSold, decimal? grossProfit, decimal? operatingExpenses, 
         decimal? operatingIncome, decimal? netIncome, decimal? ebitda, decimal? ebit, decimal? epsBasic, 
-        decimal? epsDiluted, decimal? dividendPerShare, decimal? totalAssets, decimal? totalLiabilities, 
-        decimal? totalEquity, decimal? debtTotal, decimal? debtNet, decimal? bookValuePerShare, 
-        decimal? cashFlowOperating, decimal? cashFlowInvesting, decimal? cashFlowFinancing, decimal? cashFlowFree)
+        decimal? epsDiluted, decimal? outstandingSharesBasic, decimal? outstandingSharesDiluted, 
+        decimal? dividendPerShare, decimal? totalAssets, decimal? totalLiabilities, decimal? totalEquity, 
+        decimal? debtTotal, decimal? debtNet, decimal? bookValuePerShare, decimal? cashFlowOperating, 
+        decimal? cashFlowInvesting, decimal? cashFlowFinancing, decimal? cashFlowFree)
     {
         Symbol = symbol;
         Year = year;
@@ -27,6 +28,8 @@ public class ReportUpdated
         Ebit = ebit;
         EpsBasic = epsBasic;
         EpsDiluted = epsDiluted;
+        OutstandingSharesBasic = outstandingSharesBasic;
+        OutstandingSharesDiluted = outstandingSharesDiluted;
         DividendPerShare = dividendPerShare;
         
         TotalAssets = totalAssets;
@@ -78,6 +81,10 @@ public class ReportUpdated
     public decimal? EpsBasic { get; private set; }
     
     public decimal? EpsDiluted { get; private set; }
+    
+    public decimal? OutstandingSharesBasic { get; private set; }
+    
+    public decimal? OutstandingSharesDiluted { get; private set; }
     
     public decimal? DividendPerShare { get; private set; }
     

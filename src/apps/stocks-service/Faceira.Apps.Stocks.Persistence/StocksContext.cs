@@ -11,7 +11,7 @@ public class StocksContext : DbContext
     {
         
     }
-
+    
     public DbSet<CompanyUpdated> Companies { get; set; } = default!;
     public DbSet<ReportUpdated> FinancialsYears { get; set; } = default!;
     public DbSet<ReportUpdated> FinancialsQuarters { get; set; } = default!;

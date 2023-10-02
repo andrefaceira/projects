@@ -4,18 +4,19 @@ using Faceira.Apps.Stocks.Messages.Companies;
 using Faceira.Apps.Stocks.Persistence;
 using Faceira.Shared.Application.Application;
 
-namespace Faceira.Apps.Stocks.Application.Handlers;
+namespace Faceira.Apps.Stocks.Application.Handlers.Companies;
 
 public class UpdateCompany : IHandle<CompanyUpdateTriggered>
 {
     private readonly StocksContext _stocksContext;
     private readonly IFinnhubHttpClient _httpClient;
+    private readonly IServiceBus _serviceBus;
 
-    public UpdateCompany(StocksContext stocksContext, 
-        IFinnhubHttpClient httpClient)
+    public UpdateCompany(StocksContext stocksContext, IFinnhubHttpClient httpClient, IServiceBus serviceBus)
     {
         _stocksContext = stocksContext;
         _httpClient = httpClient;
+        _serviceBus = serviceBus;
     }
 
     public async Task Handle(CompanyUpdateTriggered message)
@@ -23,6 +24,8 @@ public class UpdateCompany : IHandle<CompanyUpdateTriggered>
         var companyUpdated = await Get(message.Symbol);
         
         await Update(companyUpdated);
+        
+        await _serviceBus.Publish(companyUpdated);
     }
 
     private async Task<CompanyUpdated> Get(string symbol)

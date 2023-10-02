@@ -8,7 +8,6 @@ public class CompanyUpdated : IMessage
     public CompanyUpdated(string symbol, string name, string exchange, string currency, string country, DateTime ipoDate, string industry)
     {
         Symbol = symbol;
-        CreatedAt = DateTime.UtcNow; 
         Name = name;
         Exchange = exchange;
         Currency = currency;
@@ -20,8 +19,6 @@ public class CompanyUpdated : IMessage
     [Key]
     [MaxLength(10)]
     public string Symbol { get; private set; }
-    
-    public DateTime CreatedAt { get; private set; }
     
     [MaxLength(100)]
     public string Name { get; private set; }

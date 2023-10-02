@@ -20,7 +20,6 @@ namespace Faceira.Apps.Stocks.Persistence.Migrations
                 columns: table => new
                 {
                     Symbol = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Exchange = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Currency = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),

@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Faceira.Apps.Stocks.Persistence.Migrations
 {
     [DbContext(typeof(StocksContext))]
-    [Migration("20231001200050_AddCompaniesTable")]
+    [Migration("20231002231734_AddCompaniesTable")]
     partial class AddCompaniesTable
     {
         /// <inheritdoc />
@@ -26,7 +26,7 @@ namespace Faceira.Apps.Stocks.Persistence.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Faceira.Apps.Stocks.Messages.CompanyUpdated", b =>
+            modelBuilder.Entity("Faceira.Apps.Stocks.Messages.Companies.CompanyUpdated", b =>
                 {
                     b.Property<string>("Symbol")
                         .HasMaxLength(10)
@@ -36,9 +36,6 @@ namespace Faceira.Apps.Stocks.Persistence.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Currency")
                         .IsRequired()
