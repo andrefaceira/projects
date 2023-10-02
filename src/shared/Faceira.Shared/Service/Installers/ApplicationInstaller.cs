@@ -14,7 +14,8 @@ public static class ApplicationInstaller
         return services
             .AddHandlers(Assembly.GetCallingAssembly())
             .AddScoped<IDispatcher>(serviceProvider =>
-                new DefaultDispatcher(serviceProvider))
+                new ExceptionsDispatcher(
+                    new DefaultDispatcher(serviceProvider)))
             .AddScoped<DaprClient, DaprClient>(_ =>
                 new DaprClientBuilder().Build())
             .AddLogging(logs => { logs.AddConsole(); })

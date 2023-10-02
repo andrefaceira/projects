@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Text.Json;
 using Faceira.Apps.Stocks.Application.HttpClients;
 using Faceira.Apps.Stocks.Messages;
@@ -19,8 +20,13 @@ public class FetchFinancialsFinnhub : IHandle<FinancialsUpdateTriggered>
 
     public async Task Handle(FinancialsUpdateTriggered message)
     {
-        var symbol = message.Symbol;
-        
+        var reports = await GetFinancials(message.Symbol);
+
+        var x = reports.ToList();
+    }
+
+    private async Task<IEnumerable<FinancialsUpdated>> GetFinancials(string symbol)
+    {
         var response = await _httpClient.Get<JsonElement>(
             $"stock/financials-reported?symbol={symbol}");
 
@@ -37,13 +43,25 @@ public class FetchFinancialsFinnhub : IHandle<FinancialsUpdateTriggered>
                 Symbol = p.GetProperty("symbol").ToString(),
                 Year = p.GetProperty("year").GetInt32(),
                 Quarter = p.GetProperty("quarter").GetInt32(),
-                PeriodStart = DateTime.SpecifyKind(p.GetProperty("startDate").GetDateTime(), DateTimeKind.Utc),
-                PeriodEnd = DateTime.SpecifyKind(p.GetProperty("endDate").GetDateTime(), DateTimeKind.Utc),
+                PeriodStart = DateTime.ParseExact(
+                    p.GetProperty("startDate").ToString(),
+                    "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None),
+                PeriodEnd = DateTime.ParseExact(
+                    p.GetProperty("endDate").ToString(),
+                    "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None),
+                // PeriodEnd = DateTime.SpecifyKind(p.GetProperty("endDate").GetDateTime(), DateTimeKind.Utc),
                 BalanceSheet = p.GetProperty("report").GetProperty("bs").EnumerateArray(),
                 IncomeStatement = p.GetProperty("report").GetProperty("ic").EnumerateArray(),
                 CashFlow = p.GetProperty("report").GetProperty("cf").EnumerateArray(),
-            });
-
-        var x = reports.ToList();
+            })
+            .Select(p => new FinancialsUpdated(
+                p.Symbol,
+                p.Year,
+                p.Quarter,
+                p.PeriodStart,
+                p.PeriodEnd
+            ));
+        
+        return reports;
     }
 }
