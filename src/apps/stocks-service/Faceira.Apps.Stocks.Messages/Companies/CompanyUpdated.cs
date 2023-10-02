@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Faceira.Shared.Application.Messages;
 
-namespace Faceira.Apps.Stocks.Messages;
+namespace Faceira.Apps.Stocks.Messages.Companies;
 
 public class CompanyUpdated : IMessage
 {

@@ -1,4 +1,5 @@
-﻿using Faceira.Apps.Stocks.Messages;
+﻿using Faceira.Apps.Stocks.Messages.Companies;
+using Faceira.Apps.Stocks.Messages.Financials;
 using Microsoft.EntityFrameworkCore;
 
 namespace Faceira.Apps.Stocks.Persistence;
@@ -12,7 +13,8 @@ public class StocksContext : DbContext
     }
 
     public DbSet<CompanyUpdated> Companies { get; set; } = default!;
-    public DbSet<FinancialsUpdated> Financials { get; set; } = default!;
+    public DbSet<ReportUpdated> FinancialsYears { get; set; } = default!;
+    public DbSet<ReportUpdated> FinancialsQuarters { get; set; } = default!;
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

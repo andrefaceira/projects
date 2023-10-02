@@ -1,17 +1,17 @@
 ﻿using System.Text.Json;
 using Faceira.Apps.Stocks.Application.HttpClients;
-using Faceira.Apps.Stocks.Messages;
+using Faceira.Apps.Stocks.Messages.Companies;
 using Faceira.Apps.Stocks.Persistence;
 using Faceira.Shared.Application.Application;
 
 namespace Faceira.Apps.Stocks.Application.Handlers;
 
-public class FetchCompanyDetailsFinnhub : IHandle<CompanyUpdateTriggered>
+public class UpdateCompany : IHandle<CompanyUpdateTriggered>
 {
     private readonly StocksContext _stocksContext;
     private readonly IFinnhubHttpClient _httpClient;
 
-    public FetchCompanyDetailsFinnhub(StocksContext stocksContext, 
+    public UpdateCompany(StocksContext stocksContext, 
         IFinnhubHttpClient httpClient)
     {
         _stocksContext = stocksContext;
@@ -20,12 +20,12 @@ public class FetchCompanyDetailsFinnhub : IHandle<CompanyUpdateTriggered>
 
     public async Task Handle(CompanyUpdateTriggered message)
     {
-        var companyUpdated = await GetCompany(message.Symbol);
-
-        await UpdateCompany(companyUpdated);
+        var companyUpdated = await Get(message.Symbol);
+        
+        await Update(companyUpdated);
     }
 
-    private async Task<CompanyUpdated> GetCompany(string symbol)
+    private async Task<CompanyUpdated> Get(string symbol)
     {
         var response = await _httpClient.Get<JsonElement>(
             $"stock/profile2?symbol={symbol}");
@@ -47,7 +47,7 @@ public class FetchCompanyDetailsFinnhub : IHandle<CompanyUpdateTriggered>
         );
     }
 
-    private async Task UpdateCompany(CompanyUpdated companyUpdated)
+    private async Task Update(CompanyUpdated companyUpdated)
     {
         var companyExists = _stocksContext.Companies.Any(p => p.Symbol == companyUpdated.Symbol);
         if (companyExists)

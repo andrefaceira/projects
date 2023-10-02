@@ -1,7 +1,6 @@
-using Faceira.Shared.Application;
 using Faceira.Shared.Application.Messages;
 
-namespace Faceira.Apps.Stocks.Messages;
+namespace Faceira.Apps.Stocks.Messages.Companies;
 
 public class CompanyUpdateTriggered : IMessage
 {
