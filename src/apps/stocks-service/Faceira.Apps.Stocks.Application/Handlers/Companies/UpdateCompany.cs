@@ -1,31 +1,34 @@
 ﻿using System.Text.Json;
 using Faceira.Apps.Stocks.Application.HttpClients;
-using Faceira.Apps.Stocks.Messages;
+using Faceira.Apps.Stocks.Messages.Companies;
 using Faceira.Apps.Stocks.Persistence;
 using Faceira.Shared.Application.Application;
 
-namespace Faceira.Apps.Stocks.Application.Handlers;
+namespace Faceira.Apps.Stocks.Application.Handlers.Companies;
 
-public class FetchCompanyDetailsFinnhub : IHandle<CompanyUpdateTriggered>
+public class UpdateCompany : IHandle<CompanyUpdateTriggered>
 {
     private readonly StocksContext _stocksContext;
     private readonly IFinnhubHttpClient _httpClient;
+    private readonly IServiceBus _serviceBus;
 
-    public FetchCompanyDetailsFinnhub(StocksContext stocksContext, 
-        IFinnhubHttpClient httpClient)
+    public UpdateCompany(StocksContext stocksContext, IFinnhubHttpClient httpClient, IServiceBus serviceBus)
     {
         _stocksContext = stocksContext;
         _httpClient = httpClient;
+        _serviceBus = serviceBus;
     }
 
     public async Task Handle(CompanyUpdateTriggered message)
     {
-        var companyUpdated = await GetCompany(message.Symbol);
-
-        await UpdateCompany(companyUpdated);
+        var companyUpdated = await Get(message.Symbol);
+        
+        await Update(companyUpdated);
+        
+        await _serviceBus.Publish(companyUpdated);
     }
 
-    private async Task<CompanyUpdated> GetCompany(string symbol)
+    private async Task<CompanyUpdated> Get(string symbol)
     {
         var response = await _httpClient.Get<JsonElement>(
             $"stock/profile2?symbol={symbol}");
@@ -33,7 +36,7 @@ public class FetchCompanyDetailsFinnhub : IHandle<CompanyUpdateTriggered>
         if (response.GetProperty("ticker").GetString() != symbol)
         {
             throw new InvalidOperationException(
-                $"FinnhubHttpClient.Get<CompanyUpdated> returned a company with symbol {response.GetProperty("ticker").GetString()} instead of {symbol}");
+                $"FinnhubHttpClient returned a company with symbol {response.GetProperty("ticker").GetString()} instead of {symbol}");
         }
         
         return new CompanyUpdated(
@@ -47,7 +50,7 @@ public class FetchCompanyDetailsFinnhub : IHandle<CompanyUpdateTriggered>
         );
     }
 
-    private async Task UpdateCompany(CompanyUpdated companyUpdated)
+    private async Task Update(CompanyUpdated companyUpdated)
     {
         var companyExists = _stocksContext.Companies.Any(p => p.Symbol == companyUpdated.Symbol);
         if (companyExists)
