@@ -11,11 +11,11 @@ public class ExceptionsDispatcher : IDispatcher
         _dispatcher = dispatcher;
     }
 
-    public Task Dispatch<TMessage>(TMessage message) where TMessage : IMessage
+    public async Task Dispatch<TMessage>(TMessage message) where TMessage : IMessage
     {
         try
         {
-            return _dispatcher.Dispatch(message);
+            await _dispatcher.Dispatch(message);
         }
         catch (Exception e)
         {

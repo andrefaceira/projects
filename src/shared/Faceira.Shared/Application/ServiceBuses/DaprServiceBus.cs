@@ -1,9 +1,7 @@
 using Dapr.Client;
-using Faceira.Shared.Application.Application;
 using Faceira.Shared.Application.Messages;
-using Microsoft.Extensions.Options;
 
-namespace Faceira.Shared.Application.Dapr;
+namespace Faceira.Shared.Application.Application.ServiceBuses;
 
 public class DaprServiceBus : IServiceBus
 {

@@ -1,5 +1,7 @@
 using Faceira.Apps.Stocks.Application.HttpClients;
 using Faceira.Apps.Stocks.Persistence;
+using Faceira.Shared.Application.Application;
+using Faceira.Shared.Application.Application.ServiceBuses;
 using Faceira.Shared.Application.Service.Installers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,7 +14,8 @@ public static class StocksApplicationInstaller
         StocksApplicationConfiguration configuration)
     {
         services.AddApplication();
-        services.AddServiceBus(configuration.ServiceBuses.StocksServiceBus.Name);
+        services.AddScoped<IServiceBus, NoopServiceBus>();
+        // services.AddServiceBus(configuration.ServiceBuses.StocksServiceBus.Name);
         services.AddDbContext<StocksContext>(options =>
             options.UseNpgsql(configuration.Databases.StocksDatabase.ConnectionString));
         services.AddHttpClient<IFinnhubHttpClient, FinnhubHttpClient>(httpClient =>
