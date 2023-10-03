@@ -15,11 +15,11 @@ public class UpdateFinancialsYear : IHandle<FinancialsYearUpdateTriggered>
     private readonly StocksContext _stocksContext;
     private readonly IServiceBus _serviceBus;
 
-    public UpdateFinancialsYear(IFinnhubHttpClient httpClient, // IMapper<IEnumerable<ReportUpdated>> mapper, 
+    public UpdateFinancialsYear(IFinnhubHttpClient httpClient, IMapper<IEnumerable<ReportUpdated>> mapper, 
         StocksContext stocksContext, IServiceBus serviceBus)
     {
         _httpClient = httpClient;
-        _mapper = new FinancialsMapper();
+        _mapper = mapper;
         _stocksContext = stocksContext;
         _serviceBus = serviceBus;
     }

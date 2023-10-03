@@ -1,6 +1,7 @@
 using System.Globalization;
 using System.Text.Json;
 using Faceira.Apps.Stocks.Messages.Financials;
+using Faceira.Shared.Application.Application;
 
 namespace Faceira.Apps.Stocks.Application.Handlers.Financials.Mappers;
 

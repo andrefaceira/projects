@@ -14,11 +14,11 @@ public class UpdateFinancialsQuarter : IHandle<FinancialsQuarterUpdateTriggered>
     private readonly StocksContext _stocksContext;
     private readonly IServiceBus _serviceBus;
 
-    public UpdateFinancialsQuarter(IFinnhubHttpClient httpClient, //IMapper<IEnumerable<ReportUpdated>> mapper, 
+    public UpdateFinancialsQuarter(IFinnhubHttpClient httpClient, IMapper<IEnumerable<ReportUpdated>> mapper, 
         StocksContext stocksContext, IServiceBus serviceBus)
     {
         _httpClient = httpClient;
-        _mapper = new FinancialsMapper();
+        _mapper = mapper;
         _stocksContext = stocksContext;
         _serviceBus = serviceBus;
     }

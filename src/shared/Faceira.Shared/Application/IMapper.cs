@@ -1,6 +1,6 @@
 using System.Text.Json;
 
-namespace Faceira.Apps.Stocks.Application;
+namespace Faceira.Shared.Application.Application;
 
 public interface IMapper<out T> 
     where T : class
