@@ -1,5 +1,7 @@
 using Faceira.Apps.Stocks.Application;
 using Faceira.Apps.Stocks.Messages;
+using Faceira.Apps.Stocks.Messages.Companies;
+using Faceira.Apps.Stocks.Messages.Financials;
 using Faceira.Shared.Application;
 using Faceira.Shared.Application.Service;
 using Faceira.Shared.Application.Service.Configuration;
@@ -59,6 +61,8 @@ var api = builder.BuildApi();
 
 api.MapGroup("companies")
     // TODO: ideally we would add the handler and not the message. route name could also be inferred.
-    .BuildServiceApiRoute<CompanyUpdateTriggered>("FetchCompanyDetailsFinnhub");
+    .BuildServiceApiRoute<CompanyUpdateTriggered>("CompanyUpdateTriggered")
+    .BuildServiceApiRoute<FinancialsQuarterUpdateTriggered>("FinancialsQuarterUpdateTriggered")
+    .BuildServiceApiRoute<FinancialsYearUpdateTriggered>("FinancialsYearUpdateTriggered");
 
 api.Run();
