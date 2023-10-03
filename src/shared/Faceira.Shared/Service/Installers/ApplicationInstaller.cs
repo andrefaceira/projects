@@ -13,22 +13,32 @@ public static class ApplicationInstaller
     {
         var assembly = Assembly.GetCallingAssembly();
         
-        return services
+        // handlers
+        services
             .AddGenericImplementations(assembly, typeof(IHandle<>))
             .AddGenericImplementations(assembly, typeof(IMapper<>))
             .AddScoped<IDispatcher>(serviceProvider =>
                 new ExceptionsDispatcher(
-                    new DefaultDispatcher(serviceProvider)))
-            .AddScoped<DaprClient, DaprClient>(_ =>
-                new DaprClientBuilder().Build())
-            .AddLogging(logs => { logs.AddConsole(); })
-            .AddOpenTracing(p =>
+                    new DefaultDispatcher(serviceProvider)));
+            
+        // dapr
+        services.AddScoped<DaprClient, DaprClient>(_ =>
+            new DaprClientBuilder().Build());
+
+        // logging
+        services.AddLogging(logs =>
+            logs.AddConsole());
+        
+        // tracing
+        services.AddOpenTracing(p =>
+        {
+            p.ConfigureAspNetCore(options =>
             {
-                p.ConfigureAspNetCore(options =>
-                {
-                    options.Hosting.IgnorePatterns.Add(ctx => ctx.Request.Path == "/health");
-                });
+                options.Hosting.IgnorePatterns.Add(ctx => ctx.Request.Path == "/health");
             });
+        });
+        
+        return services;
     }
 
     private static IServiceCollection AddGenericImplementations(this IServiceCollection services, 

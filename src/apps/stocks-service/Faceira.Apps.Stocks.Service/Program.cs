@@ -61,8 +61,8 @@ var api = builder.BuildApi();
 
 api.MapGroup("companies")
     // TODO: ideally we would add the handler and not the message. route name could also be inferred.
-    .BuildServiceApiRoute<CompanyUpdateTriggered>("CompanyUpdateTriggered")
-    .BuildServiceApiRoute<FinancialsQuarterUpdateTriggered>("FinancialsQuarterUpdateTriggered")
-    .BuildServiceApiRoute<FinancialsYearUpdateTriggered>("FinancialsYearUpdateTriggered");
+    .BuildServiceApiRoute<CompanyUpdateTriggered>("UpdateCompany")
+    .BuildServiceApiRoute<FinancialsYearUpdateTriggered>("UpdateFinancialsYear")
+    .BuildServiceApiRoute<FinancialsQuarterUpdateTriggered>("UpdateFinancialsQuarter");
 
 api.Run();
