@@ -10,11 +10,11 @@ namespace Faceira.Apps.Stocks.Application.Handlers.Financials;
 public class UpdateFinancialsQuarter : IHandle<FinancialsQuarterUpdateTriggered>
 {
     private readonly IFinnhubHttpClient _httpClient;
-    private readonly IMapper<IEnumerable<ReportUpdated>> _mapper;
+    private readonly IMapper<IEnumerable<FinancialReport>> _mapper;
     private readonly StocksContext _stocksContext;
     private readonly IServiceBus _serviceBus;
 
-    public UpdateFinancialsQuarter(IFinnhubHttpClient httpClient, IMapper<IEnumerable<ReportUpdated>> mapper, 
+    public UpdateFinancialsQuarter(IFinnhubHttpClient httpClient, IMapper<IEnumerable<FinancialReport>> mapper, 
         StocksContext stocksContext, IServiceBus serviceBus)
     {
         _httpClient = httpClient;
@@ -36,8 +36,10 @@ public class UpdateFinancialsQuarter : IHandle<FinancialsQuarterUpdateTriggered>
         
         var reports = _mapper.Map(response);
         
-        var lastFinancial = _stocksContext.FinancialsQuarters
+        var lastFinancial = _stocksContext.Financials
             .Where(p => p.Symbol == message.Symbol)
+            .Where(p => p.Type == FinancialReport.ReportTypeNominal)
+            .Where(p => p.Quarter > 0)
             .OrderBy(p => p.Year)
             .ThenBy(p => p.Quarter)
             .FirstOrDefault();
@@ -51,10 +53,10 @@ public class UpdateFinancialsQuarter : IHandle<FinancialsQuarterUpdateTriggered>
             return;
         }
         
-        await _stocksContext.FinancialsQuarters.AddRangeAsync(newFinancials);
+        await _stocksContext.AddRangeAsync(newFinancials);
         await _stocksContext.SaveChangesAsync();
 
         await _serviceBus.Publish(
-            new FinancialsQuarterUpdated(reports));
+            new FinancialsUpdated(reports));
     }
 }

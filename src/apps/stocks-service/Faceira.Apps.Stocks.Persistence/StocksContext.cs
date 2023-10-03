@@ -13,11 +13,13 @@ public class StocksContext : DbContext
     }
     
     public DbSet<CompanyUpdated> Companies { get; set; } = default!;
-    public DbSet<ReportUpdated> FinancialsYears { get; set; } = default!;
-    public DbSet<ReportUpdated> FinancialsQuarters { get; set; } = default!;
+    public DbSet<FinancialReport> Financials { get; set; } = default!;
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.HasDefaultSchema("stocks");
+
+        modelBuilder.Entity<FinancialReport>().HasKey(p => new { p.Symbol, p.Type, p.Year, p.Quarter });
+        modelBuilder.Entity<FinancialReport>().HasIndex(p => new { p.Symbol, p.Type });
     }
 }

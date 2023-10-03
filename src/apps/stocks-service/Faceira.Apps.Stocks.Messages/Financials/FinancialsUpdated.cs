@@ -1,10 +1,24 @@
 using System.ComponentModel.DataAnnotations;
+using Faceira.Shared.Application.Messages;
 
 namespace Faceira.Apps.Stocks.Messages.Financials;
 
-public class ReportUpdated
+public class FinancialsUpdated : IMessage
 {
-    public ReportUpdated(string symbol, int year, int quarter, DateTime periodStart, DateTime periodEnd, 
+    public FinancialsUpdated(IEnumerable<FinancialReport> financials)
+    {
+        Financials = financials;
+    }
+
+    public IEnumerable<FinancialReport> Financials { get; private set; }
+}
+
+
+public class FinancialReport
+{
+    public const string ReportTypeNominal = "nominal";
+
+    public FinancialReport(string symbol, string type, int year, int quarter, DateTime periodStart, DateTime periodEnd, 
         decimal? revenue, decimal? costsOfGoodsSold, decimal? grossProfit, decimal? operatingExpenses, 
         decimal? operatingIncome, decimal? netIncome, decimal? ebitda, decimal? ebit, decimal? epsBasic, 
         decimal? epsDiluted, decimal? outstandingSharesBasic, decimal? outstandingSharesDiluted, 
@@ -13,6 +27,7 @@ public class ReportUpdated
         decimal? cashFlowInvesting, decimal? cashFlowFinancing, decimal? cashFlowFree)
     {
         Symbol = symbol;
+        Type = type;
         Year = year;
         Quarter = quarter;
         PeriodStart = periodStart;
@@ -48,6 +63,10 @@ public class ReportUpdated
     [Key]
     [MaxLength(10)]
     public string Symbol { get; private set; }
+    
+    [Key]
+    [MaxLength(10)]
+    public string Type { get; private set; }
 
     [Key]
     public int Year { get; private set; }

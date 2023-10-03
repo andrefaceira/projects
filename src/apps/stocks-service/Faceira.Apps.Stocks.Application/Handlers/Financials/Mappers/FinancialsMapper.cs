@@ -5,9 +5,9 @@ using Faceira.Shared.Application.Application;
 
 namespace Faceira.Apps.Stocks.Application.Handlers.Financials.Mappers;
 
-public class FinancialsMapper : IMapper<IEnumerable<ReportUpdated>>
+public class FinancialsMapper : IMapper<IEnumerable<FinancialReport>>
 { 
-    public IEnumerable<ReportUpdated> Map(JsonElement response)
+    public IEnumerable<FinancialReport> Map(JsonElement response)
     {
         return response.GetProperty("data")
             .EnumerateArray()
@@ -30,8 +30,9 @@ public class FinancialsMapper : IMapper<IEnumerable<ReportUpdated>>
                         pp.GetProperty("value").GetDecimal()
                     ))
             })
-            .Select(p => new ReportUpdated(
+            .Select(p => new FinancialReport(
                 p.Symbol,
+                FinancialReport.ReportTypeNominal,
                 p.Year,
                 p.Quarter,
                 p.PeriodStart,
