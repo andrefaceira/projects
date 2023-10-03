@@ -73,9 +73,17 @@ public class FinancialsMapper : IMapper<IEnumerable<ReportUpdated>>
             .FirstOrDefault();
     }
     
-    private decimal? MapConceptMillions(IEnumerable<KeyValuePair<string, decimal?>> report, string concept)
+    private decimal? MapConceptMillions(IEnumerable<KeyValuePair<string, decimal?>> report, 
+        string concept, int? roundPrecision = null)
     {
-        return MapConcept(report, concept) 
-               / 1000000;
+        var value = MapConcept(report, concept);
+        if (value == null)
+        {
+            return null;
+        }
+        
+        return decimal.Round(
+            value.Value / 1000000, 
+            roundPrecision ?? 2);
     }
 }
