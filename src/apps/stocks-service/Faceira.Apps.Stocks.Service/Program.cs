@@ -9,7 +9,7 @@ using Faceira.Shared.Application.Service.Configuration;
 
 var builder = DefaultApplicationBuilder.CreateApiBuilder(args);
 
-builder.Services.AddHandlers(
+builder.Services.AddHandlersAssemblies(
     typeof(StocksApplicationInstaller).Assembly);
 
 builder.Services.AddStocksApplication(new StocksApplicationConfiguration

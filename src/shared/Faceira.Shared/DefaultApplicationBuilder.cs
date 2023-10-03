@@ -17,12 +17,12 @@ public static class DefaultApplicationBuilder
         return builder;
     }
     
-    public static IServiceCollection AddHandlers(this IServiceCollection services,
+    public static IServiceCollection AddHandlersAssemblies(this IServiceCollection services,
         params Assembly[] assemblies)
     {
         foreach (var assembly in assemblies)
         {
-            services.AddHandlers(assembly);
+            services.AddHandlersAssemblies(assembly);
         }
 
         return services;
