@@ -7,11 +7,8 @@ namespace Faceira.Shared.Application.Service.Installers;
 public static class HandlersInstaller
 {
     public static IServiceCollection AddHandlers(this IServiceCollection services,
-        IEnumerable<Assembly>? assemblies = null)
+        Assembly assembly)
     {
-        // TODO: add support for multiple assemblies
-        var assembly = Assembly.GetCallingAssembly();
-
         var handlers = assembly
             .GetTypes()
             .Where(p => p.GetInterfaces()

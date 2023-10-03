@@ -1,21 +1,31 @@
 using System.Reflection;
 using Faceira.Shared.Application.Service.Installers;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Faceira.Shared.Application;
 
 public static class DefaultApplicationBuilder
 {
-    public static WebApplicationBuilder CreateApiBuilder(string[] args,
-        IEnumerable<Assembly>? assemblies = null)
+    public static WebApplicationBuilder CreateApiBuilder(string[] args)
     {
         var builder = WebApplication.CreateSlimBuilder(args);
         
         builder.Services.AddApi();
         builder.Services.AddApplication();
-        builder.Services.AddHandlers(assemblies);
 
         return builder;
+    }
+    
+    public static IServiceCollection AddHandlers(this IServiceCollection services,
+        params Assembly[] assemblies)
+    {
+        foreach (var assembly in assemblies)
+        {
+            services.AddHandlers(assembly);
+        }
+
+        return services;
     }
     
     public static WebApplication BuildApi(this WebApplicationBuilder builder)

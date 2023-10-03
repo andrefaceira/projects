@@ -7,6 +7,9 @@ using Faceira.Shared.Application.Service.Configuration;
 
 var builder = DefaultApplicationBuilder.CreateApiBuilder(args);
 
+builder.Services.AddHandlers(
+    typeof(StocksApplicationInstaller).Assembly);
+
 builder.Services.AddStocksApplication(new StocksApplicationConfiguration
 {
     // TODO: may be improved?
