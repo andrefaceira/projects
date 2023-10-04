@@ -14,7 +14,7 @@ public class UpdateCompany : IHandle<CompanyUpdateTriggered>
     private readonly IServiceBus _serviceBus;
 
     public UpdateCompany(StocksContext stocksContext, 
-        [FromKeyedServices("finnhub")] IHttpClient httpClient,
+        [FromKeyedServices(DaprHttpClients.Finnhub)] IHttpClient httpClient,
         IServiceBus serviceBus)
     {
         _stocksContext = stocksContext;

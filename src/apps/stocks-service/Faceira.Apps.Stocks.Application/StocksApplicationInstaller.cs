@@ -8,6 +8,11 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Faceira.Apps.Stocks.Application;
 
+public static class DaprHttpClients
+{
+    public const string Finnhub = "finnhub";
+}
+
 public static class StocksApplicationInstaller
 {
     public static IServiceCollection AddStocksApplication(this IServiceCollection services, 
@@ -18,7 +23,7 @@ public static class StocksApplicationInstaller
         // services.AddServiceBus(configuration.ServiceBuses.StocksServiceBus.Name);
         services.AddDbContext<StocksContext>(options =>
             options.UseNpgsql(configuration.Databases.StocksDatabase.ConnectionString));
-        services.AddDaprHttpClient("finnhub", configuration.Apis.FinnhubApiBinding);
+        services.AddDaprHttpClient(DaprHttpClients.Finnhub, configuration.Apis.FinnhubApiBinding);
         
         return services;
     }

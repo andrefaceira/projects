@@ -15,7 +15,7 @@ public class UpdateFinancialsQuarter : IHandle<FinancialsQuarterUpdateTriggered>
     private readonly IServiceBus _serviceBus;
 
     public UpdateFinancialsQuarter(StocksContext stocksContext, IMapper<IEnumerable<FinancialReport>> mapper, 
-        [FromKeyedServices("finnhub")] IHttpClient httpClient, IServiceBus serviceBus)
+        [FromKeyedServices(DaprHttpClients.Finnhub)] IHttpClient httpClient, IServiceBus serviceBus)
     {
         _stocksContext = stocksContext;
         _mapper = mapper;
