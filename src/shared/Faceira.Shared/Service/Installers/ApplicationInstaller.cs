@@ -1,4 +1,3 @@
-using System.Reflection;
 using Dapr.Client;
 using Faceira.Shared.Application.Application;
 using Faceira.Shared.Application.Application.Dispatchers;

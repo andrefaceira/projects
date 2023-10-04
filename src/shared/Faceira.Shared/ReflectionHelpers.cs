@@ -12,6 +12,15 @@ public static class ReflectionHelpers
                 .Any(i => i.IsGenericType &&
                           i.GetGenericTypeDefinition() == type));
     }
+    
+    public static Type GetGenericImplementationType(this Type type)
+    {
+        return type
+            .GetInterfaces()
+            .First()
+            .GetGenericArguments()
+            .First();
+    }
 
     public static Type GetImplementedInterface(this Type type)
     {

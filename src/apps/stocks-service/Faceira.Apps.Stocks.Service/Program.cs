@@ -58,11 +58,14 @@ builder.Services.AddStocksApplication(new StocksApplicationConfiguration
 });
 
 var api = builder.BuildApi();
+api.BuildRoutes(
+    typeof(StocksApplicationInstaller).Assembly);
 
-api.MapGroup("companies")
-    // TODO: ideally we would add the handler and not the message. route name could also be inferred.
-    .BuildServiceApiRoute<CompanyUpdateTriggered>("UpdateCompany")
-    .BuildServiceApiRoute<FinancialsYearUpdateTriggered>("UpdateFinancialsYear")
-    .BuildServiceApiRoute<FinancialsQuarterUpdateTriggered>("UpdateFinancialsQuarter");
+//
+// api.MapGroup("companies")
+//     // TODO: ideally we would add the handler and not the message. route name could also be inferred.
+//     .BuildServiceApiRoute<CompanyUpdateTriggered>("UpdateCompany")
+//     .BuildServiceApiRoute<FinancialsYearUpdateTriggered>("UpdateFinancialsYear")
+//     .BuildServiceApiRoute<FinancialsQuarterUpdateTriggered>("UpdateFinancialsQuarter");
 
 api.Run();
