@@ -26,4 +26,13 @@ public static class ReflectionHelpers
     {
         return type.GetInterfaces().First();
     }
+
+    public static void InvokeGenericMethod(this Type type, 
+        string methodName, Type genericType, object[] arguments)
+    {
+        var method = type
+            .GetMethod(methodName)?
+            .MakeGenericMethod(genericType);
+        method?.Invoke(null, arguments);
+    }
 }

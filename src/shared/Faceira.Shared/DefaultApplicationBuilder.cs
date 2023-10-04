@@ -54,28 +54,24 @@ public static class DefaultApplicationBuilder
     {
         foreach (var assembly in assemblies)
         {
-            var handlers = assembly.GetGenericImplementations(typeof(IHandle<>));
-
-            var controllers = handlers.GroupBy(p => p.Namespace)
-                .Where(p => p.Key is not null)
-                .Where(p => p.Any())
-                .Select(p => new
-                {
-                    ControllerName = p.Key?.Split('.').Last() ?? string.Empty,
-                    Endpoints = p.Select(pp => new
-                    {
-                        HandlerType = pp,
-                        MessageType = pp.GetGenericImplementationType(),
-                    })
-                });
-
+            var controllers = assembly
+                .GetGenericImplementations(typeof(IHandle<>))
+                .GroupBy(p => p.Namespace);
+            
             foreach (var controller in controllers)
             {
-                var group = app.MapGroup(controller.ControllerName);
+                var group = app.MapGroup(
+                    controller.Key?.Split('.').Last() ?? string.Empty);
 
-                foreach (var endpoint in controller.Endpoints)
+                foreach (var endpoint in controller)
                 {
-                    // TODO: wire up 
+                    var type = endpoint.GetGenericImplementationType();
+                    
+                    typeof(DefaultApplicationBuilder)
+                        .InvokeGenericMethod(
+                            nameof(BuildServiceApiRoute),
+                            type,
+                            new object[] { group, type.Name });
                 }
             }
         }
@@ -83,13 +79,11 @@ public static class DefaultApplicationBuilder
         return app;
     }
     
-    public static RouteGroupBuilder BuildServiceApiRoute<TMessage>(this RouteGroupBuilder routeBuilder, string? route = null)
+    public static RouteGroupBuilder BuildServiceApiRoute<TMessage>(this RouteGroupBuilder routeBuilder, string path)
         where TMessage : IMessage
     {
-        route ??= typeof(TMessage).Name;
-        
         routeBuilder.MapPost(
-            route,
+            path,
             async (TMessage message, IDispatcher dispatcher) => 
             {
                 await dispatcher.Dispatch(message);
