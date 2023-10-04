@@ -9,8 +9,8 @@ env:
 on:
   workflow_dispatch:
   push:
-    # branches:
-    # - main
+    branches:
+    - main
 
     paths:
     - .github/workflows/stocks-service-build.yml
@@ -18,8 +18,8 @@ on:
     - src/shared/**
   
   pull_request:
-    # branches:
-    # - main
+    branches:
+    - main
 
     paths:
     - .github/workflows/stocks-service-build.yml
