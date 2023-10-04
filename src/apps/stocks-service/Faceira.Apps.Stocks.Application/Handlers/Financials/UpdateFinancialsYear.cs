@@ -3,22 +3,23 @@ using Faceira.Apps.Stocks.Application.HttpClients;
 using Faceira.Apps.Stocks.Messages.Financials;
 using Faceira.Apps.Stocks.Persistence;
 using Faceira.Shared.Application.Application;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Faceira.Apps.Stocks.Application.Handlers.Financials;
 
 public class UpdateFinancialsYear : IHandle<FinancialsYearUpdateTriggered>
 {
-    private readonly IFinnhubHttpClient _httpClient;
-    private readonly IMapper<IEnumerable<FinancialReport>> _mapper;
     private readonly StocksContext _stocksContext;
+    private readonly IMapper<IEnumerable<FinancialReport>> _mapper;
+    private readonly IHttpClient _httpClient;
     private readonly IServiceBus _serviceBus;
 
-    public UpdateFinancialsYear(IFinnhubHttpClient httpClient, IMapper<IEnumerable<FinancialReport>> mapper, 
-        StocksContext stocksContext, IServiceBus serviceBus)
+    public UpdateFinancialsYear(StocksContext stocksContext, IMapper<IEnumerable<FinancialReport>> mapper, 
+        [FromKeyedServices(DaprHttpClients.Finnhub)] IHttpClient httpClient, IServiceBus serviceBus)
     {
-        _httpClient = httpClient;
-        _mapper = mapper;
         _stocksContext = stocksContext;
+        _mapper = mapper;
+        _httpClient = httpClient;
         _serviceBus = serviceBus;
     }
 

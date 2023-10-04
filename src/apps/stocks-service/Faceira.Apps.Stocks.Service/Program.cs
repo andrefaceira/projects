@@ -29,25 +29,8 @@ builder.Services.AddStocksApplication(new StocksApplicationConfiguration
     },
     Apis = new ApisConfiguration
     {
-        FinnhubApi = new ApiConfiguration
-        {
-            Url = builder.Configuration["Apis:FinnhubApi:Url"]
-                  ?? throw new InvalidOperationException("Apis:FinnhubApi:Url is not configured"),
-            HttpHeaders = new Dictionary<string, string>
-            {
-                {
-                    builder.Configuration["Apis:FinnhubApi:HttpHeaderAuthKey"]
-                    ?? throw new InvalidOperationException("Apis:FinnhubApi:HttpHeaderAuthKey is not configured"),
-                    builder.Configuration["Apis:FinnhubApi:HttpHeaderAuthValue"]
-                    ?? throw new InvalidOperationException("Apis:FinnhubApi:HttpHeaderAuthValue is not configured")
-                }
-            }
-        },
-        ZacksRankApi = new ApiConfiguration
-        {
-            Url = builder.Configuration["Apis:ZacksRankApi:Url"]
-                  ?? throw new InvalidOperationException("Apis:ZacksRankApi:Url is not configured"),
-        }
+        FinnhubApiBinding = builder.Configuration["Apis:FinnhubApiBinding"]
+                            ?? throw new InvalidOperationException("Apis:FinnhubApiBinding is not configured")
     }
 });
 
