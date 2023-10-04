@@ -1,4 +1,3 @@
-using System.Reflection;
 using Dapr.Client;
 using Faceira.Shared.Application.Application;
 using Faceira.Shared.Application.Application.Dispatchers;
@@ -11,45 +10,29 @@ public static class ApplicationInstaller
 {
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
-        var assembly = Assembly.GetCallingAssembly();
-        
-        return services
-            .AddGenericImplementations(assembly, typeof(IHandle<>))
-            .AddGenericImplementations(assembly, typeof(IMapper<>))
+        // dispatcher
+        services
             .AddScoped<IDispatcher>(serviceProvider =>
                 new ExceptionsDispatcher(
-                    new DefaultDispatcher(serviceProvider)))
-            .AddScoped<DaprClient, DaprClient>(_ =>
-                new DaprClientBuilder().Build())
-            .AddLogging(logs => { logs.AddConsole(); })
-            .AddOpenTracing(p =>
-            {
-                p.ConfigureAspNetCore(options =>
-                {
-                    options.Hosting.IgnorePatterns.Add(ctx => ctx.Request.Path == "/health");
-                });
-            });
-    }
+                    new DefaultDispatcher(serviceProvider)));
+            
+        // dapr
+        services.AddScoped<DaprClient, DaprClient>(_ =>
+            new DaprClientBuilder().Build());
 
-    private static IServiceCollection AddGenericImplementations(this IServiceCollection services, 
-        Assembly assembly, Type type)
-    {
-        var implementations = assembly
-            .GetTypes()
-            .Where(p => p.GetInterfaces()
-                .Any(i => i.IsGenericType &&
-                          i.GetGenericTypeDefinition() == type))
-            .Select(p => new
-            {
-                Type = p,
-                InterfaceType = p.GetInterfaces().First()
-            });
-
-        foreach (var implementation in implementations)
+        // logging
+        services.AddLogging(logs =>
+            logs.AddConsole());
+        
+        // tracing
+        services.AddOpenTracing(p =>
         {
-            services.AddScoped(implementation.InterfaceType, implementation.Type);
-        }
-
+            p.ConfigureAspNetCore(options =>
+            {
+                options.Hosting.IgnorePatterns.Add(ctx => ctx.Request.Path == "/health");
+            });
+        });
+        
         return services;
     }
 }

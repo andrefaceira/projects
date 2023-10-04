@@ -1,8 +1,7 @@
 using System.Collections.ObjectModel;
 using Dapr.Client;
-using Faceira.Shared.Application.Application;
 
-namespace Faceira.Shared.Application.Dapr;
+namespace Faceira.Shared.Application.Application.HttpClients;
 
 public class DaprHttpClient : IHttpClient
 {

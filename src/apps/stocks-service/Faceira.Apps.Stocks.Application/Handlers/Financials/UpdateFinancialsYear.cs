@@ -1,6 +1,4 @@
-using System.Globalization;
 using System.Text.Json;
-using Faceira.Apps.Stocks.Application.Handlers.Financials.Mappers;
 using Faceira.Apps.Stocks.Application.HttpClients;
 using Faceira.Apps.Stocks.Messages.Financials;
 using Faceira.Apps.Stocks.Persistence;
