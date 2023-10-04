@@ -21,20 +21,14 @@ public static class DefaultApplicationBuilder
         return builder;
     }
     
-    public static IServiceCollection AddHandlersAssemblies(this IServiceCollection services,
+    public static WebApplication BuildApi(this WebApplicationBuilder builder, 
         params Assembly[] assemblies)
     {
-        foreach (var assembly in assemblies)
-        {
-            services.AddHandlersAssembly(assembly);
-        }
-
-        return services;
-    }
-    
-    public static WebApplication BuildApi(this WebApplicationBuilder builder)
-    {
+        builder.Services.AddHandlersAssemblies(assemblies);
+        
         var app = builder.Build();
+
+        app.BuildRoutes(assemblies);
 
         // health checks
         app.MapHealthChecks("/health");
@@ -50,7 +44,7 @@ public static class DefaultApplicationBuilder
         return app;
     }
     
-    public static WebApplication BuildRoutes(this WebApplication app, params Assembly[] assemblies)
+    private static WebApplication BuildRoutes(this WebApplication app, params Assembly[] assemblies)
     {
         foreach (var assembly in assemblies)
         {

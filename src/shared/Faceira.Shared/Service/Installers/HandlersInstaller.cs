@@ -6,7 +6,18 @@ namespace Faceira.Shared.Application.Service.Installers;
 
 public static class HandlersInstaller
 {
-    public static IServiceCollection AddHandlersAssembly(this IServiceCollection services, Assembly assembly)
+    public static IServiceCollection AddHandlersAssemblies(this IServiceCollection services,
+        params Assembly[] assemblies)
+    {
+        foreach (var assembly in assemblies)
+        {
+            services.AddHandlersAssembly(assembly);
+        }
+
+        return services;
+    }
+    
+    private static IServiceCollection AddHandlersAssembly(this IServiceCollection services, Assembly assembly)
     {
         services.AddGenericImplementations(assembly, typeof(IHandle<>));
         services.AddGenericImplementations(assembly, typeof(IMapper<>));

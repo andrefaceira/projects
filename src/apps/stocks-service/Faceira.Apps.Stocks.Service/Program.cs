@@ -5,8 +5,6 @@ using Faceira.Shared.Application.Service.Configuration;
 
 var builder = DefaultApplicationBuilder.CreateApiBuilder(args);
 
-builder.Services.AddHandlersAssemblies(
-    typeof(StocksApplicationInstaller).Assembly);
 
 builder.Services.AddStocksApplication(new StocksApplicationConfiguration
 {
@@ -53,8 +51,7 @@ builder.Services.AddStocksApplication(new StocksApplicationConfiguration
     }
 });
 
-var api = builder.BuildApi();
-api.BuildRoutes(
+var api = builder.BuildApi(
     typeof(StocksApplicationInstaller).Assembly);
 
 api.Run();
