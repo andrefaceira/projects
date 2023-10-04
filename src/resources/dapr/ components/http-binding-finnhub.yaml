@@ -11,6 +11,6 @@ spec:
   - name: securityTokenHeader
     value: "X-Finnhub-Token"
   - name: securityToken
-    value: "ckctkn1r01qg61btmilgckctkn1r01qg61btmim0"
+    value: "finnhub_security_token"
   - name: direction
     value: "output"
