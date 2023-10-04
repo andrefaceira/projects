@@ -1,9 +1,5 @@
 using Faceira.Apps.Stocks.Application;
-using Faceira.Apps.Stocks.Messages;
-using Faceira.Apps.Stocks.Messages.Companies;
-using Faceira.Apps.Stocks.Messages.Financials;
 using Faceira.Shared.Application;
-using Faceira.Shared.Application.Service;
 using Faceira.Shared.Application.Service.Configuration;
 
 

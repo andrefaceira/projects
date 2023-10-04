@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System.Reflection;
 using Faceira.Shared.Application.Application;
 using Faceira.Shared.Application.Messages;

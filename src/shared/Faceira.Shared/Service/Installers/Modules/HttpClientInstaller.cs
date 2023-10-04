@@ -1,6 +1,6 @@
 using Dapr.Client;
 using Faceira.Shared.Application.Application;
-using Faceira.Shared.Application.Dapr;
+using Faceira.Shared.Application.Application.HttpClients;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Faceira.Shared.Application.Service.Installers.Modules;
