@@ -60,8 +60,11 @@ public static class DefaultApplicationBuilder
             
             foreach (var controller in controllers)
             {
-                var group = app.MapGroup(
-                    controller.Key?.Split('.').Last() ?? string.Empty);
+                var controllerName = controller.Key?.Split('.').Last() ?? string.Empty;
+                
+                var group = app
+                    .MapGroup(controllerName)
+                    .WithTags(controllerName);
 
                 foreach (var endpoint in controller)
                 {
@@ -82,14 +85,14 @@ public static class DefaultApplicationBuilder
     public static RouteGroupBuilder BuildServiceApiRoute<TMessage>(this RouteGroupBuilder routeBuilder, string path)
         where TMessage : IMessage
     {
-        routeBuilder.MapPost(
-            path,
-            async (TMessage message, IDispatcher dispatcher) => 
-            {
-                await dispatcher.Dispatch(message);
-    
-                return Results.Ok();
-            });
+        routeBuilder
+            .MapPost(path,
+                async (TMessage message, IDispatcher dispatcher) =>
+                {
+                    await dispatcher.Dispatch(message);
+
+                    return Results.Ok();
+                });
         
         return routeBuilder;
     }
