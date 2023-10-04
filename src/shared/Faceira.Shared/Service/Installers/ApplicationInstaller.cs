@@ -11,10 +11,14 @@ public static class ApplicationInstaller
 {
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
+        var assembly = Assembly.GetCallingAssembly();
+        
         return services
-            .AddHandlers(Assembly.GetCallingAssembly())
+            .AddGenericImplementations(assembly, typeof(IHandle<>))
+            .AddGenericImplementations(assembly, typeof(IMapper<>))
             .AddScoped<IDispatcher>(serviceProvider =>
-                new DefaultDispatcher(serviceProvider))
+                new ExceptionsDispatcher(
+                    new DefaultDispatcher(serviceProvider)))
             .AddScoped<DaprClient, DaprClient>(_ =>
                 new DaprClientBuilder().Build())
             .AddLogging(logs => { logs.AddConsole(); })
@@ -27,25 +31,23 @@ public static class ApplicationInstaller
             });
     }
 
-    private static IServiceCollection AddHandlers(this IServiceCollection services,
-        Assembly? assembly = null)
+    private static IServiceCollection AddGenericImplementations(this IServiceCollection services, 
+        Assembly assembly, Type type)
     {
-        assembly ??= Assembly.GetCallingAssembly();
-
-        var handlers = assembly
+        var implementations = assembly
             .GetTypes()
             .Where(p => p.GetInterfaces()
                 .Any(i => i.IsGenericType &&
-                          i.GetGenericTypeDefinition() == typeof(IHandle<>)))
+                          i.GetGenericTypeDefinition() == type))
             .Select(p => new
             {
-                HandlerType = p,
+                Type = p,
                 InterfaceType = p.GetInterfaces().First()
             });
 
-        foreach (var handler in handlers)
+        foreach (var implementation in implementations)
         {
-            services.AddScoped(handler.InterfaceType, handler.HandlerType);
+            services.AddScoped(implementation.InterfaceType, implementation.Type);
         }
 
         return services;
