@@ -22,7 +22,7 @@ public static class DefaultApplicationBuilder
     {
         foreach (var assembly in assemblies)
         {
-            services.AddHandlersAssemblies(assembly);
+            services.AddHandlersAssembly(assembly);
         }
 
         return services;
