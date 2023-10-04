@@ -3,25 +3,26 @@ using Faceira.Apps.Stocks.Application.HttpClients;
 using Faceira.Apps.Stocks.Messages.Financials;
 using Faceira.Apps.Stocks.Persistence;
 using Faceira.Shared.Application.Application;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Faceira.Apps.Stocks.Application.Handlers.Financials;
 
 public class UpdateFinancialsQuarter : IHandle<FinancialsQuarterUpdateTriggered>
 {
-    private readonly IFinnhubHttpClient _httpClient;
-    private readonly IMapper<IEnumerable<FinancialReport>> _mapper;
     private readonly StocksContext _stocksContext;
+    private readonly IMapper<IEnumerable<FinancialReport>> _mapper;
+    private readonly IHttpClient _httpClient;
     private readonly IServiceBus _serviceBus;
 
-    public UpdateFinancialsQuarter(IFinnhubHttpClient httpClient, IMapper<IEnumerable<FinancialReport>> mapper, 
-        StocksContext stocksContext, IServiceBus serviceBus)
+    public UpdateFinancialsQuarter(StocksContext stocksContext, IMapper<IEnumerable<FinancialReport>> mapper, 
+        [FromKeyedServices("finnhub")] IHttpClient httpClient, IServiceBus serviceBus)
     {
-        _httpClient = httpClient;
-        _mapper = mapper;
         _stocksContext = stocksContext;
+        _mapper = mapper;
+        _httpClient = httpClient;
         _serviceBus = serviceBus;
     }
-    
+
     public async Task Handle(FinancialsQuarterUpdateTriggered message)
     {
         var response = await _httpClient.Get<JsonElement>(

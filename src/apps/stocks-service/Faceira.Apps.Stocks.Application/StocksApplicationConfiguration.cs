@@ -21,6 +21,5 @@ public class ServiceBusesConfiguration
 
 public class ApisConfiguration
 {
-    public required ApiConfiguration FinnhubApi { get; init; }
-    public required ApiConfiguration ZacksRankApi { get; init; }
+    public required string FinnhubApiBinding { get; init; }
 }

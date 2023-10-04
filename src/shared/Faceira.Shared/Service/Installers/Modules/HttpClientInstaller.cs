@@ -7,7 +7,7 @@ namespace Faceira.Shared.Application.Service.Installers.Modules;
 
 public static class HttpClientInstaller
 {
-    public static IServiceCollection AddHttpClient(this IServiceCollection services,
+    public static IServiceCollection AddDaprHttpClient(this IServiceCollection services,
         string key, string bindingName)
     {
         services.AddKeyedScoped<IHttpClient, DaprHttpClient>(key, (serviceProvider, _) =>

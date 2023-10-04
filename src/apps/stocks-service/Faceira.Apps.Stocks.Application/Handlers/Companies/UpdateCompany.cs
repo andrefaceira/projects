@@ -3,16 +3,19 @@ using Faceira.Apps.Stocks.Application.HttpClients;
 using Faceira.Apps.Stocks.Messages.Companies;
 using Faceira.Apps.Stocks.Persistence;
 using Faceira.Shared.Application.Application;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Faceira.Apps.Stocks.Application.Handlers.Companies;
 
 public class UpdateCompany : IHandle<CompanyUpdateTriggered>
 {
     private readonly StocksContext _stocksContext;
-    private readonly IFinnhubHttpClient _httpClient;
+    private readonly IHttpClient _httpClient;
     private readonly IServiceBus _serviceBus;
 
-    public UpdateCompany(StocksContext stocksContext, IFinnhubHttpClient httpClient, IServiceBus serviceBus)
+    public UpdateCompany(StocksContext stocksContext, 
+        [FromKeyedServices("finnhub")] IHttpClient httpClient,
+        IServiceBus serviceBus)
     {
         _stocksContext = stocksContext;
         _httpClient = httpClient;
