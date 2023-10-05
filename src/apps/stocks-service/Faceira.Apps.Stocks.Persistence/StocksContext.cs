@@ -18,8 +18,6 @@ public class StocksContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.HasDefaultSchema("stocks");
-
-        modelBuilder.Entity<FinancialReport>().HasKey(p => new { p.Symbol, p.Type, p.Year, p.Quarter });
-        modelBuilder.Entity<FinancialReport>().HasIndex(p => new { p.Symbol, p.Type });
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(StocksContext).Assembly);
     }
 }
