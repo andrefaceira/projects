@@ -17,6 +17,14 @@ public class FinancialsUpdated : IMessage
 public class FinancialReport
 {
     public const string ReportTypeNominal = "nominal";
+    public const string Growth1 = "growth-1";
+    public const string Growth2 = "growth-2";
+    public const string Growth3 = "growth-3";
+    public const string Growth4 = "growth-4";
+    public const string Growth5 = "growth-5";
+    public const string Growth8 = "growth-8";
+    public const string Growth10 = "growth-10";
+    public const string Growth12 = "growth-12";
 
     public FinancialReport(string symbol, string type, int year, int quarter, DateTime periodStart, DateTime periodEnd, 
         decimal? revenue, decimal? costsOfGoodsSold, decimal? grossProfit, decimal? operatingExpenses, 

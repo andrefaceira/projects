@@ -43,7 +43,8 @@ public class UpdateFinancialsYear : IHandle<FinancialsYearUpdateTriggered>
             .FirstOrDefault();
         
         var newFinancials = reports
-            .Where(p => p.Year > lastFinancial?.Year);
+            .Where(p => p.Year >= lastFinancial?.Year || 
+                        (p.Year == lastFinancial?.Year && p.Quarter > lastFinancial.Quarter));
         
         if (!newFinancials.Any())
         {
