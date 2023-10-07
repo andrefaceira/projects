@@ -1,0 +1,53 @@
+name: stocks-service-build
+
+env:
+  IMAGE_NAME: stocks-service
+  DOCKERFILE: src/apps/stocks-service/Faceira.Apps.Stocks.Service/Dockerfile
+  REGISTRY: registry.digitalocean.com/faceira
+  DIGITALOCEAN_API_KEY: ${{ secrets.DIGITALOCEAN_API_KEY }}
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+    - main
+
+    paths:
+    - .github/workflows/stocks-service-build.yml
+    - src/apps/stocks-service/**
+    - src/shared/**
+  
+  pull_request:
+    branches:
+    - main
+
+    paths:
+    - .github/workflows/stocks-service-build.yml
+    - src/apps/stocks-service/**
+    - src/shared/**
+    
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    
+      - name: Git checkout
+        uses: actions/checkout@v3
+
+      - name: Build docker image
+        run: docker build ./src --file ${{ env.DOCKERFILE }} --tag ${{ env.IMAGE_NAME }}
+        
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ env.DIGITALOCEAN_API_KEY }}
+
+      - name: Log in registry 
+        run: doctl registry login --expiry-seconds 600
+
+      - name: Tag image 
+        run:
+          docker tag ${{ env.IMAGE_NAME }} ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+     
+      - name: Push to registry 
+        run: docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
