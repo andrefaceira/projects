@@ -17,14 +17,22 @@ public class ComputeFinancialsGrowth : IHandle<FinancialsUpdated>
 
     public async Task Handle(FinancialsUpdated message)
     {
-        var reports = message.Financials.OrderByDescending(p => p.Year);
-        var numberOfReports = 1;
-        var reportType = "TODO";
+        var reports = message.Financials
+            .OrderByDescending(p => p.Year)
+            .ThenByDescending(p => p.Quarter);
 
-        
-        // TODO: foreach reportType
-        var computedReports = GetFinancialsGrowth(reports, reportType,  numberOfReports);
-        
+        var periods = Enumerable.Range(1, 12);
+        foreach (var period in periods)
+        {
+            await HandleFinancialsGrowthPeriod(reports, period);
+        }
+    }
+
+    private async Task HandleFinancialsGrowthPeriod(IOrderedEnumerable<FinancialReport> reports, int periodsNumber)
+    {
+        var reportType = $"growth-{periodsNumber}";
+        var computedReports = CalculateFinancialsGrowth(reports, reportType, periodsNumber);
+
         var lastFinancial = _stocksContext.Financials
             .Where(p => p.Symbol == reports.First().Symbol)
             .Where(p => p.Type == reportType)
@@ -33,30 +41,27 @@ public class ComputeFinancialsGrowth : IHandle<FinancialsUpdated>
             .OrderBy(p => p.Year)
             .ThenBy(p => p.Quarter)
             .FirstOrDefault();
-        
+
         var newFinancials = computedReports
-            .Where(p => p.Year >= lastFinancial?.Year || 
+            .Where(p => p.Year >= lastFinancial?.Year ||
                         (p.Year == lastFinancial?.Year && p.Quarter > lastFinancial.Quarter));
 
         await _stocksContext.AddRangeAsync(newFinancials);
-        
+
         await _serviceBus.Publish(
             new FinancialsUpdated(computedReports));
-        
-        
-        
-        
+
         await _stocksContext.SaveChangesAsync();
     }
 
-    private IEnumerable<FinancialReport> GetFinancialsGrowth(IOrderedEnumerable<FinancialReport> reports, 
-        string reportType, int numberOfReports)
+    private IEnumerable<FinancialReport> CalculateFinancialsGrowth(IEnumerable<FinancialReport> reports, 
+        string reportType, int periodsNumber)
     {
         var computedReports = new List<FinancialReport>();
-        for (var i = 0; i < reports.Count() - numberOfReports; i++)
+        for (var i = 0; i < reports.Count() - periodsNumber; i++)
         {
             var currentReport = reports.ElementAt(i);
-            var previousReport = reports.ElementAt(i + numberOfReports);
+            var previousReport = reports.ElementAt(i + periodsNumber);
 
             computedReports.Add(new FinancialReport
             (
@@ -67,29 +72,29 @@ public class ComputeFinancialsGrowth : IHandle<FinancialsUpdated>
                 currentReport.PeriodStart,
                 currentReport.PeriodEnd,
                 
-                CalculateAverageGrowth(currentReport.Revenue, previousReport.Revenue, numberOfReports),
-                CalculateAverageGrowth(currentReport.CostsOfGoodsSold, previousReport.CostsOfGoodsSold, numberOfReports),
-                CalculateAverageGrowth(currentReport.GrossProfit, previousReport.GrossProfit, numberOfReports),
-                CalculateAverageGrowth(currentReport.OperatingExpenses, previousReport.OperatingExpenses, numberOfReports),
-                CalculateAverageGrowth(currentReport.OperatingIncome, previousReport.OperatingIncome, numberOfReports),
-                CalculateAverageGrowth(currentReport.NetIncome, previousReport.NetIncome, numberOfReports),
-                CalculateAverageGrowth(currentReport.Ebitda, previousReport.Ebitda, numberOfReports),
-                CalculateAverageGrowth(currentReport.Ebit, previousReport.Ebit, numberOfReports),
-                CalculateAverageGrowth(currentReport.EpsBasic, previousReport.EpsBasic, numberOfReports),
-                CalculateAverageGrowth(currentReport.EpsDiluted, previousReport.EpsDiluted, numberOfReports),
-                CalculateAverageGrowth(currentReport.OutstandingSharesBasic, previousReport.OutstandingSharesBasic, numberOfReports),
-                CalculateAverageGrowth(currentReport.OutstandingSharesDiluted, previousReport.OutstandingSharesDiluted, numberOfReports),
-                CalculateAverageGrowth(currentReport.DividendPerShare, previousReport.DividendPerShare, numberOfReports),
-                CalculateAverageGrowth(currentReport.TotalAssets, previousReport.TotalAssets, numberOfReports),
-                CalculateAverageGrowth(currentReport.TotalLiabilities, previousReport.TotalLiabilities, numberOfReports),
-                CalculateAverageGrowth(currentReport.TotalEquity, previousReport.TotalEquity, numberOfReports),
-                CalculateAverageGrowth(currentReport.DebtTotal, previousReport.DebtTotal, numberOfReports),
-                CalculateAverageGrowth(currentReport.DebtNet, previousReport.DebtNet, numberOfReports),
-                CalculateAverageGrowth(currentReport.BookValuePerShare, previousReport.BookValuePerShare, numberOfReports),
-                CalculateAverageGrowth(currentReport.CashFlowOperating, previousReport.CashFlowOperating, numberOfReports),
-                CalculateAverageGrowth(currentReport.CashFlowInvesting, previousReport.CashFlowInvesting, numberOfReports),
-                CalculateAverageGrowth(currentReport.CashFlowFinancing, previousReport.CashFlowFinancing, numberOfReports),
-                CalculateAverageGrowth(currentReport.CashFlowFree, previousReport.CashFlowFree, numberOfReports)
+                CalculateAverageGrowth(currentReport.Revenue, previousReport.Revenue, periodsNumber),
+                CalculateAverageGrowth(currentReport.CostsOfGoodsSold, previousReport.CostsOfGoodsSold, periodsNumber),
+                CalculateAverageGrowth(currentReport.GrossProfit, previousReport.GrossProfit, periodsNumber),
+                CalculateAverageGrowth(currentReport.OperatingExpenses, previousReport.OperatingExpenses, periodsNumber),
+                CalculateAverageGrowth(currentReport.OperatingIncome, previousReport.OperatingIncome, periodsNumber),
+                CalculateAverageGrowth(currentReport.NetIncome, previousReport.NetIncome, periodsNumber),
+                CalculateAverageGrowth(currentReport.Ebitda, previousReport.Ebitda, periodsNumber),
+                CalculateAverageGrowth(currentReport.Ebit, previousReport.Ebit, periodsNumber),
+                CalculateAverageGrowth(currentReport.EpsBasic, previousReport.EpsBasic, periodsNumber),
+                CalculateAverageGrowth(currentReport.EpsDiluted, previousReport.EpsDiluted, periodsNumber),
+                CalculateAverageGrowth(currentReport.OutstandingSharesBasic, previousReport.OutstandingSharesBasic, periodsNumber),
+                CalculateAverageGrowth(currentReport.OutstandingSharesDiluted, previousReport.OutstandingSharesDiluted, periodsNumber),
+                CalculateAverageGrowth(currentReport.DividendPerShare, previousReport.DividendPerShare, periodsNumber),
+                CalculateAverageGrowth(currentReport.TotalAssets, previousReport.TotalAssets, periodsNumber),
+                CalculateAverageGrowth(currentReport.TotalLiabilities, previousReport.TotalLiabilities, periodsNumber),
+                CalculateAverageGrowth(currentReport.TotalEquity, previousReport.TotalEquity, periodsNumber),
+                CalculateAverageGrowth(currentReport.DebtTotal, previousReport.DebtTotal, periodsNumber),
+                CalculateAverageGrowth(currentReport.DebtNet, previousReport.DebtNet, periodsNumber),
+                CalculateAverageGrowth(currentReport.BookValuePerShare, previousReport.BookValuePerShare, periodsNumber),
+                CalculateAverageGrowth(currentReport.CashFlowOperating, previousReport.CashFlowOperating, periodsNumber),
+                CalculateAverageGrowth(currentReport.CashFlowInvesting, previousReport.CashFlowInvesting, periodsNumber),
+                CalculateAverageGrowth(currentReport.CashFlowFinancing, previousReport.CashFlowFinancing, periodsNumber),
+                CalculateAverageGrowth(currentReport.CashFlowFree, previousReport.CashFlowFree, periodsNumber)
             ));
         }
 
